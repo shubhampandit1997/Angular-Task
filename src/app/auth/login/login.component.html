@@ -1,0 +1,38 @@
+<div class="back">
+
+
+    <div class="div-center">
+  
+  
+      <div class="content">
+  
+  
+        <h3>Login</h3>
+        <hr />
+        <form [formGroup]="loginForm">
+          <div class="form-group">
+            <label>Email <span id="strick">*</span></label>
+            <input type="email" class="form-control" placeholder="Email" formControlName="Username" 
+            [ngClass]="{ 'is-invalid': submitted && f['Username'].errors }">
+            <div *ngIf="submitted && f['Username'].errors" class="invalid-feedback">
+                <div *ngIf="f['Username'].errors['required']" style="color: red;">Email is required</div>                
+            </div>
+          </div>
+          <div class="form-group">
+            <label >Password  <span id="strick">*</span></label>
+            <input type="password" class="form-control" placeholder="Password" formControlName="Password"
+            [ngClass]="{ 'is-invalid': submitted && f['Password'].errors }">
+            <div *ngIf="submitted && f['Password'].errors" class="invalid-feedback">
+                <div *ngIf="f['Password'].errors['required']" style="color: red;">Password is required</div>
+              </div>
+          </div>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Login</button>
+          <hr />
+          <button type="button" class="btn btn-link">Signup</button>
+          <button type="button" class="btn btn-link">Reset Password</button>
+  
+        </form>
+  
+      </div>
+  
+    </div>

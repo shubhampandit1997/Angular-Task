@@ -1,0 +1,235 @@
+<div class="container">
+    <div class="table-wrapper">
+        <div class="table-title">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h2>User <b>Data</b></h2>
+                </div>
+                <div class="col-sm-2">
+                    
+                        <input class="form-control" type="text" name="search" [(ngModel)]="searchTerm" placeholder="Search" (change)="filteredItems()">
+                </div>
+                <div class="col-sm-4">
+                    <button type="button" class="btn btn-danger" (click)="logout()">Logout</button>
+                    <a data-toggle="modal" data-target="#addEmployeeModal" class="btn btn-success"
+                        data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a>
+                      
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th>Gender</th>
+                    <th>Address</th>
+                    <th>Image</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody *ngFor="let emp of data ">
+                <tr>
+
+                    <td>{{emp.name}}</td>
+                    <td>{{emp.email}}</td>
+                    <td>{{emp.number}}</td>
+                    <td>{{emp.gender}}</td>
+                    <td>{{emp.address}}</td>
+                    <td><img src="{{emp.image}}" width="30px" height="30px">
+                    </td>
+                    <td>
+                        <a data-toggle="modal" data-target="#editEmployeeModal" (click)="edit(emp)" class="edit"
+                            data-toggle="modal"><i class="material-icons" data-toggle="tooltip"
+                                title="Edit">&#xE254;</i></a>
+                        <a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons"
+                                data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                    </td>
+                </tr>
+                <!-- Edit Modal HTML -->
+                <div id="editEmployeeModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form [formGroup]="userUpdateFrom">
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Edit User</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" formControlName="name"
+                                            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+                                        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['name'].errors['required']" style="color: red;">Name is
+                                                required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" class="form-control" formControlName="email"
+                                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                                        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['email'].errors['required']" style="color: red;">Email is
+                                                required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Phone</label>
+                                        <input type="text" class="form-control" formControlName="number" maxlength="10"
+                                            [ngClass]="{ 'is-invalid': submitted && f['number'].errors }">
+                                        <div *ngIf="submitted && f['number'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['number'].errors['required']" style="color: red;">Number is
+                                                required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Gender</label><br>
+                                        <label>
+                                            <input type="radio" formControlName="gender" value="male" /> Male
+                                        </label> &nbsp;
+                                        <label>
+                                            <input type="radio" formControlName="gender" value="female" /> Female
+                                        </label> &nbsp;
+                                        <label>
+                                            <input type="radio" formControlName="gender" value="other" /> Other
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Address</label>
+                                        <textarea class="form-control" formControlName="address"
+                                            [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"></textarea>
+                                        <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['address'].errors['required']" style="color: red;">Address is
+                                                required</div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Image</label>
+                                        <input type="text" class="form-control" formControlName="image">
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <input type="submit" class="btn btn-info" value="update" (click)="updateUser(emp)">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Modal HTML -->
+                <div id="deleteEmployeeModal" class="modal fade">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form>
+                                <div class="modal-header">
+                                    <h4 class="modal-title">Delete User</h4>
+                                    <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete these Records?</p>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                                    <input type="submit" class="btn btn-danger" value="Delete"
+                                        (click)="deleteUser(emp)">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </tbody>
+        </table>
+        <div class="clearfix">
+
+            <ul class="pagination">
+                <li class="page-item disabled"><a >Previous</a></li>
+                <li class="page-item"><a  class="page-link">1</a></li>
+
+                <li class="page-item"><a  class="page-link">Next</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Add Modal HTML -->
+<div id="addEmployeeModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form [formGroup]="userAddFrom">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add User</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" class="form-control" formControlName="name"
+                            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }">
+                        <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                            <div *ngIf="f['name'].errors['required']" style="color: red;">Name is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" class="form-control" formControlName="email"
+                            [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                            <div *ngIf="f['email'].errors['required']" style="color: red;">Email is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" class="form-control" formControlName="number" maxlength="10"
+                            [ngClass]="{ 'is-invalid': submitted && f['number'].errors }">
+                        <div *ngIf="submitted && f['number'].errors" class="invalid-feedback">
+                            <div *ngIf="f['number'].errors['required']" style="color: red;">Number is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label><br>
+                        <label>
+                            <input type="radio" formControlName="gender" value="male" /> Male
+                        </label> &nbsp;
+                        <label>
+                            <input type="radio" formControlName="gender" value="female" /> Female
+                        </label> &nbsp;
+                        <label>
+                            <input type="radio" formControlName="gender" value="other" /> Other
+                        </label>
+                        <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+                            <div *ngIf="f['gender'].errors['required']" style="color: red;">Gender is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <textarea class="form-control" formControlName="address"
+                            [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"></textarea>
+                        <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                            <div *ngIf="f['address'].errors['required']" style="color: red;">Address is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Image</label>
+                        <input type="file" accept="image/*" class="form-control" formControlName="image"
+                            (change)="uploadImage($event)">
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Add" (click)="submit()">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
